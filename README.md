@@ -1,6 +1,7 @@
 # miLight-V6-iBox2-Domoticz
 Controls your miLights iBox2 V6 with Domoticz<br/>
-Tested with bulbs RGBW/WW/CW 
+Tested with bulbs RGBW/WW/CW<br/>
+<img src="http://stair-lighting.com/images/MI-LIGHT/WiFi-iBox2/mini/250px_wifi-ibox2-1.jpg">
 
 <h4>Use as follow: milight.sh CMD1 CMD2</h4>
 
