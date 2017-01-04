@@ -1,6 +1,6 @@
 # miLight-V6-iBox2-Domoticz
 Controls your miLights iBox2 V6 with Domoticz<br/>
-Test with bulbs RGBW/WW/CW 
+Tested with bulbs RGBW/WW/CW 
 
 <h4>Use as follow: milight.sh CMD1 CMD2</h4>
 
