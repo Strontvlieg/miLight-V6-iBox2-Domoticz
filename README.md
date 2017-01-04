@@ -1,7 +1,7 @@
 # miLight-V6-iBox2-Domoticz
-Control your miLights iBox2 V6 with Domoticz
+Controls your miLights iBox2 V6 with Domoticz
 
-<h3>Use as follow: milight.sh CMD1 CMD2</h3>
+<h4>Use as follow: milight.sh CMD1 CMD2</h4>
 
 <h4>CMD1 Bulb zone</h4>
 <p>
