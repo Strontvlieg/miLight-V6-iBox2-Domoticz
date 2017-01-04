@@ -20,18 +20,36 @@ ON OFF NIGHTON WHITEON WW00 WW25 WW50 WW75 WW100 DIM00 DIM25 DIM50 DIM75 DIM100 
 <li>OFF action dummy switch: script:///home/pi/domoticz/scripts/python/milight.sh 00 OFF</li>
 </ol>
 </p>
---------------------------<br/>
--- Command line options --<br/>
---------------------------<br/>
-Use command line as follow : milight.sh CMD1 CMD2<br/>
-                           : CMD1 Bulb zone<br/>
-                           : CMD2 Bulb command<br/>
--------------------------------------------------------------------------------------------<br/>
-Select the bulb zone       : 00 01 02 03 04<br/>
-Bulb on/off                : ON OFF NIGHTON WHITEON<br/>
-Kelvin warmwhite           : WW00 WW25 WW50 WW75 WW100<br/>
-Brightness                 : DIM00 DIM25 DIM50 DIM75 DIM100<br/>
-Saturation                 : SATUR00 SATUR25 SATUR50 SATUR75 SATUR100<br/>
-Mode (discomode)           : MODE01 MODE02 MODE03 MODE04 MODE05 MODE06 MODE07 MODE08 MODE09<br/>
-Mode Speed up/down         : SPEEDUP SPEEDDOWN<br/>
-<br/>
+<h4>Command line options</h4>
+<p>
+<table>
+<tr>
+<td>Bulb zone</td>
+<td>00 01 02 03 04</td>
+</tr>
+<tr>
+<td>Bulb on/off</td>
+<td>ON OFF NIGHTON WHITEON</td>
+</tr>
+<tr>
+<td>Kelvin warmwhite</td>
+<td>WW00 WW25 WW50 WW75 WW100</td>
+</tr>
+<tr>
+<td>Brightness</td>
+<td>DIM00 DIM25 DIM50 DIM75 DIM100</td>
+</tr>
+<tr>
+<td>Saturation</td>
+<td>SATUR00 SATUR25 SATUR50 SATUR75 SATUR100</td>
+</tr>
+<tr>
+<td>Mode (discomode)</td>
+<td>MODE01 MODE02 MODE03 MODE04 MODE05 MODE06 MODE07 MODE08 MODE09</td>
+</tr>
+<tr>
+<td>Mode Speed up/down</td>
+<td>SPEEDUP SPEEDDOWN</td>
+</tr>
+</table>
+</p>
