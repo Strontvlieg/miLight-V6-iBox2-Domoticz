@@ -12,7 +12,7 @@ ON OFF NIGHTON WHITEON WW00 WW25 WW50 WW75 WW100 DIM00 DIM25 DIM50 DIM75 DIM100 
 <b>Domoticz example ON/OFF switch</b><br/>
 <ul>
 <li>Add a virtual/dummy switch in Domoticz (see https://www.domoticz.com/wiki/Wemo#Creating_Dummy_Switches)</li>
-<li>The ON action dummy switch: script:///home/pi/domoticz/scripts/python/milight.sh 00 ON</li>
-<li>The OFF action dummy switch: script:///home/pi/domoticz/scripts/python/milight.sh 00 OFF</li>
+<li>ON action dummy switch: script:///home/pi/domoticz/scripts/python/milight.sh 00 ON</li>
+<li>OFF action dummy switch: script:///home/pi/domoticz/scripts/python/milight.sh 00 OFF</li>
 </ul>
 
