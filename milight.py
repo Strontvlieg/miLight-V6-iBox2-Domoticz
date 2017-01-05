@@ -117,7 +117,7 @@ sockServer = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 sockServer.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
 sockServer.bind(('', UDP_PORT_RECEIVE))
 sockServer.sendto(bytearray.fromhex(IBOX_START_SESSION), (IBOX_IP, UDP_PORT_SEND))
-dataReceived, addr = sockServer.recvfrom(4096)
+dataReceived, addr = sockServer.recvfrom(65536)
 dataResponse = str(dataReceived.encode('hex')).upper()
 SessionID1 = dataResponse[38:40]
 SessionID2 = dataResponse[40:42]
@@ -139,7 +139,7 @@ for x in range(0, UDP_TIMES_TO_SEND_COMMAND):
 	print "[DEBUG] sending command          :", sendCommand
 	
 	sockServer.sendto(bytearray.fromhex(sendCommand), (IBOX_IP, UDP_PORT_SEND))
-	dataReceived, addr = sockServer.recvfrom(4096)
+	dataReceived, addr = sockServer.recvfrom(65536)
 	dataResponse = str(dataReceived.encode('hex')).upper()
 	print "[DEBUG] received message         :", dataResponse
 sockServer.close()
