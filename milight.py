@@ -99,7 +99,10 @@ def iBox2CommandBuilder(iBoxModel, iBoxSessionID1, iBoxSessionID2, iBoxCycleNR, 
 ## Checksum builder ##
 ######################
 def getChecksum(data):
-	return ('%x' % sum(int(x, 16) for x in data.split())).upper()	
+	checksum = 0
+	for x in bytearray.fromhex(data):
+		checksum += x
+	return format(checksum, "04X")[2:]	
 
 
 #####################################
