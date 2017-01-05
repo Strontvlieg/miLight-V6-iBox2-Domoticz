@@ -35,6 +35,7 @@ CMDLINE_INFO = (
 "Saturation                 : SATUR00 SATUR25 SATUR50 SATUR75 SATUR100\n"
 "Mode (discomode)           : MODE01 MODE02 MODE03 MODE04 MODE05 MODE06 MODE07 MODE08 MODE09\n"
 "Mode Speed up/down         : SPEEDUP SPEEDDOWN\n"
+"Bulb color                 : COLOR001 COLOR002 COLOR003 COLOR004\n"
 )
 
 CMDLINE_ZONE = sys.argv[1].strip()
@@ -85,6 +86,10 @@ def iBox2BulbCommand(x):
 	"MODE09"         : "31 00 00 08 06 09 00 00 00",
 	"SPEEDUP"        : "31 00 00 08 04 03 00 00 00",
 	"SPEEDDOWN"      : "31 00 00 08 04 04 00 00 00",
+	"COLOR001"       : "31 00 00 08 01 BA BA BA BA",
+	"COLOR002"       : "31 00 00 08 01 FF FF FF FF",
+	"COLOR003"       : "31 00 00 08 01 7A 7A 7A 7A",
+	"COLOR004"       : "31 00 00 08 01 1E 1E 1E 1E",
     }.get(x)
 
 
