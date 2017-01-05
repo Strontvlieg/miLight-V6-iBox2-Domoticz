@@ -113,35 +113,41 @@ def getChecksum(data):
 #####################################
 ## Start session and send commands ##
 #####################################
-sockServer = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-sockServer.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-sockServer.bind(('', UDP_PORT_RECEIVE))
-sockServer.sendto(bytearray.fromhex(IBOX_START_SESSION), (IBOX_IP, UDP_PORT_SEND))
-dataReceived, addr = sockServer.recvfrom(65536)
-dataResponse = str(dataReceived.encode('hex')).upper()
-SessionID1 = dataResponse[38:40]
-SessionID2 = dataResponse[40:42]
-print "[DEBUG] iBox model               :", IBOX_MODEL
-print "[DEBUG] received session message :", dataResponse
-print "[DEBUG] sessionID1               :", SessionID1
-print "[DEBUG] sessionID2               :", SessionID2
-for x in range(0, UDP_TIMES_TO_SEND_COMMAND):
-	CycleNR = str(x).zfill(2)
-	print "[DEBUG] cycle number             :", CycleNR
-	
-	bulbCommand = iBox2BulbCommand(CMDLINE_CMD)
-	print "[DEBUG] light command            :", bulbCommand
-	
-	Checksum = getChecksum(bulbCommand + "00" + CMDLINE_ZONE)
-	print "[DEBUG] checksum                 :", Checksum
-	
-	sendCommand = iBox2CommandBuilder(IBOX_MODEL, SessionID1, SessionID2, CycleNR, bulbCommand, CMDLINE_ZONE, Checksum, "00")
-	print "[DEBUG] sending command          :", sendCommand
-	
-	sockServer.sendto(bytearray.fromhex(sendCommand), (IBOX_IP, UDP_PORT_SEND))
+try:
+	sockServer = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+	sockServer.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+	sockServer.bind(('', UDP_PORT_RECEIVE))
+	sockServer.sendto(bytearray.fromhex(IBOX_START_SESSION), (IBOX_IP, UDP_PORT_SEND))
 	dataReceived, addr = sockServer.recvfrom(65536)
 	dataResponse = str(dataReceived.encode('hex')).upper()
-	print "[DEBUG] received message         :", dataResponse
-sockServer.close()
+	SessionID1 = dataResponse[38:40]
+	SessionID2 = dataResponse[40:42]
+	print "[DEBUG] iBox model               :", IBOX_MODEL
+	print "[DEBUG] received session message :", dataResponse
+	print "[DEBUG] sessionID1               :", SessionID1
+	print "[DEBUG] sessionID2               :", SessionID2
+	for x in range(0, UDP_TIMES_TO_SEND_COMMAND):
+		CycleNR = str(x).zfill(2)
+		print "[DEBUG] cycle number             :", CycleNR
+	
+		bulbCommand = iBox2BulbCommand(CMDLINE_CMD)
+		print "[DEBUG] light command            :", bulbCommand
+	
+		Checksum = getChecksum(bulbCommand + "00" + CMDLINE_ZONE)
+		print "[DEBUG] checksum                 :", Checksum
+	
+		sendCommand = iBox2CommandBuilder(IBOX_MODEL, SessionID1, SessionID2, CycleNR, bulbCommand, CMDLINE_ZONE, Checksum, "00")
+		print "[DEBUG] sending command          :", sendCommand
+	
+		sockServer.sendto(bytearray.fromhex(sendCommand), (IBOX_IP, UDP_PORT_SEND))
+		dataReceived, addr = sockServer.recvfrom(65536)
+		dataResponse = str(dataReceived.encode('hex')).upper()
+		print "[DEBUG] received message         :", dataResponse
+
+except Exception as e:
+	print("[DEBUG] something's wrong with %s:%d. Exception is %s" % (IBOX_IP, UDP_PORT_SEND, e))
+
+finally:
+	sockServer.close()
 
 raise SystemExit(0)
