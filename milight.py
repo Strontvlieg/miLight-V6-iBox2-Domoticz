@@ -7,7 +7,6 @@ import sys;
 ###################
 IBOX_MODEL = "80 00 00 00 11" # iBox2
 IBOX_IP = "192.168.1.18"
-
 UDP_PORT_SEND = 5987
 UDP_PORT_RECEIVE = 55054
 UDP_MAX_TRY = 3
