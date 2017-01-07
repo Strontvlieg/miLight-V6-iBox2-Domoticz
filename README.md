@@ -5,7 +5,7 @@ Tested with bulbs RGBW/WW/CW<br/>
 <h4>How to install</h4>
 <p>
 Copy both files (milight.sh and milight.py) to /home/pi/domoticz/scripts/python and set chmod to 777 on the files<br/>
-Change the follow setting to your own settings<br/>
+Change the follow setting to your own settings with Notepad++<br/>
 <ul>
   <li>IBOX_IP = "192.168.1.18"</li>
   <li>IBOX_MODEL = "80 00 00 00 11" # iBox2</li>
