@@ -13,13 +13,12 @@ UDP_PORT_RECEIVE = 55054
 UDP_MAX_TRY = 3
 UDP_TIMEOUT = 5
 ############################################################################################################
-print "\n"
+
 
 ##########################
 ## Commandline commands ##
 ##########################
 CMDLINE_INFO = (
-"\n"
 "##########################\n"
 "## Command line options ##\n"
 "##########################\n"
@@ -136,8 +135,8 @@ for iCount in range(0, UDP_MAX_TRY):
         sockServer.close()
         continue
 
-    except Exception as e:
-        print "[DEBUG] something's wrong        :", e 
+    except Exception as ex:
+        print "[DEBUG] something's wrong        :", ex 
 
 
 #######################
@@ -168,8 +167,8 @@ if Session == True:
             print "[DEBUG] timeout on command       :", sendCommand
             continue
 
-        except Exception as et:
-            print "[DEBUG] something's wrong        :", et
+        except Exception as ex:
+            print "[DEBUG] something's wrong        :", ex
 
         finally:
             sockServer.close()
