@@ -10,11 +10,11 @@ Copy both files (milight.sh and milight.py) to /home/pi/domoticz/scripts/python 
 <p>
 /home/pi/domoticz/scripts/python/milight.sh CMD1 CMD2
 </p>
-<h4>CMD1 Bulb zone</h4>
+<h4>CMD1 = Bulb zone</h4>
 <p>
 00 01 02 03 04
 </p>
-<h4>CMD2 Bulb command</h4>
+<h4>CMD2 = Bulb command</h4>
 <p>
 ON OFF NIGHTON WHITEON WW00 WW25 WW50 WW75 WW100 DIM00 DIM25 DIM50 DIM75 DIM100 SATUR00 SATUR25 SATUR50 SATUR75 SATUR100 MODE01 MODE02 MODE03 MODE04 MODE05 MODE06 MODE07 MODE08 MODE09 SPEEDUP SPEEDDOWN
 </p>
