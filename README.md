@@ -1,6 +1,5 @@
 # miLight-V6-iBox2-Domoticz
-Controls your miLights iBox2 V6 with Domoticz<br/>
-Tested with bulbs RGBW/WW/CW<br/>
+Controls your miLights iBox2 V6 with Domoticz and retry the command when sending fails. Tested with bulbs RGBW/WW/CW
 <img src="http://stair-lighting.com/images/MI-LIGHT/WiFi-iBox2/mini/250px_wifi-ibox2-1.jpg">
 <h4>How to install</h4>
 <p>
