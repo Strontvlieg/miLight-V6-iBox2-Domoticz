@@ -4,7 +4,16 @@ Tested with bulbs RGBW/WW/CW<br/>
 <img src="http://stair-lighting.com/images/MI-LIGHT/WiFi-iBox2/mini/250px_wifi-ibox2-1.jpg">
 <h4>How to install</h4>
 <p>
-Copy both files (milight.sh and milight.py) to /home/pi/domoticz/scripts/python and set chmod to 777 on the files
+Copy both files (milight.sh and milight.py) to /home/pi/domoticz/scripts/python and set chmod to 777 on the files<br/>
+Change the follow setting to your own settings<br/>
+<ul>
+  <li>IBOX_IP = "192.168.1.18"</li>
+  <li>IBOX_MODEL = "80 00 00 00 11" # iBox2</li>
+  <li>UDP_PORT_SEND = 5987</li>
+  <li>UDP_PORT_RECEIVE = 55054</li>
+  <li>UDP_MAX_TRY = 3</li>
+  <li>UDP_TIMEOUT = 5</li>
+</ul>
 </p>
 <h4>How to use</h4>
 <p>
@@ -21,9 +30,9 @@ ON OFF NIGHTON WHITEON WW00 WW25 WW50 WW75 WW100 DIM00 DIM25 DIM50 DIM75 DIM100 
 <h4>Domoticz example ON/OFF switch</h4>
 <p>
 <ol>
-<li>Add a virtual/dummy switch in Domoticz (see https://www.domoticz.com/wiki/Wemo#Creating_Dummy_Switches)</li>
-<li>ON action dummy switch: script:///home/pi/domoticz/scripts/python/milight.sh 00 ON</li>
-<li>OFF action dummy switch: script:///home/pi/domoticz/scripts/python/milight.sh 00 OFF</li>
+  <li>Add a virtual/dummy switch in Domoticz (see https://www.domoticz.com/wiki/Wemo#Creating_Dummy_Switches)</li>
+  <li>ON action dummy switch: script:///home/pi/domoticz/scripts/python/milight.sh 00 ON</li>
+  <li>OFF action dummy switch: script:///home/pi/domoticz/scripts/python/milight.sh 00 OFF</li>
 </ol>
 </p>
 <h4>Command line options</h4>
