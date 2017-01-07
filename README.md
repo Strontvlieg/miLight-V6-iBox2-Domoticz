@@ -4,7 +4,7 @@ Tested with bulbs RGBW/WW/CW<br/>
 <img src="http://stair-lighting.com/images/MI-LIGHT/WiFi-iBox2/mini/250px_wifi-ibox2-1.jpg">
 <h4>How to install</h4>
 <p>
-Copy both files (milight.sh and milight.py) to /home/pi/domoticz/scripts/python and set chmod to 777 on the files<br/>
+Copy both milight.py to /home/pi/domoticz/scripts/python and set chmod to 777 on the files<br/>
 Change the follow setting to your own settings with Notepad++<br/>
 <ul>
   <li>IBOX_IP = "192.168.1.18"</li>
@@ -17,7 +17,7 @@ Change the follow setting to your own settings with Notepad++<br/>
 </p>
 <h4>How to use</h4>
 <p>
-/home/pi/domoticz/scripts/python/milight.sh CMD1 CMD2
+/home/pi/domoticz/scripts/python/milight.py CMD1 CMD2
 </p>
 <h4>CMD1 = Bulb zone</h4>
 <p>
