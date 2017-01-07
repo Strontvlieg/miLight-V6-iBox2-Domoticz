@@ -3,7 +3,7 @@ Controls your miLights iBox2 V6 with Domoticz<br/>
 Tested with bulbs RGBW/WW/CW<br/>
 <img src="http://stair-lighting.com/images/MI-LIGHT/WiFi-iBox2/mini/250px_wifi-ibox2-1.jpg">
 
-<h4>Howto install</h4>
+<h4>How to install</h4>
 <p>
 Copy both files (milight.sh and milight.py) to /home/pi/domoticz/scripts/python
 Set chmod to 777 on the files
