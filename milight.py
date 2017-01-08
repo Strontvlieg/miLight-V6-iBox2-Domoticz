@@ -1,55 +1,34 @@
 #!/usr/bin/python
-import socket;
-import sys;
+import socket, sys, urllib2;
 
 
 ###################
 ## Configuration ##
 ###################
-IBOX_MODEL = "80 00 00 00 11" # iBox2
-IBOX_IP = "192.168.1.18"
-UDP_PORT_SEND = 5987
-UDP_PORT_RECEIVE = 55054
-UDP_MAX_TRY = 5
-UDP_TIMEOUT = 5
+IBOX_MODEL = "80 00 00 00 11"   # iBox2
+IBOX_IP = "192.168.1.18"        # iBox2 IP address
+UDP_PORT_SEND = 5987            # Port for sending
+UDP_PORT_RECEIVE = 55054        # Port for receiving
+UDP_MAX_TRY = 5                 # Max sending
+UDP_TIMEOUT = 5                 # Wait for data in sec
+DOMOTICZ_IP = "192.168.1.17"    # Domoticz IP only needed for logging
+DOMOTICZ_LOG = 0                # Turn logging to Domoticz on/off 0=off and 1=on
 ############################################################################################################
 
 
-##########################
-## Commandline commands ##
-##########################
-CMDLINE_INFO = (
-"##########################\n"
-"## Command line options ##\n"
-"##########################\n"
-"Use command line as follow : milight.py CMD1 CMD2\n"
-"                           : CMD1 Bulb zone\n"
-"                           : CMD2 Bulb command\n"
-"-------------------------------------------------------------------------------\n"
-"Select the bulb zone       : 00 01 02 03 04\n"
-"Bulb on/off                : ON OFF NIGHTON WHITEON\n"
-"Mode Speed up/down         : SPEEDUP SPEEDDOWN\n"
-"Kelvin warmwhite           : WW00 WW25 WW50 WW75 WW100\n"
-"Brightness                 : DIM00 DIM25 DIM50 DIM75 DIM100\n"
-"Saturation                 : SATUR00 SATUR25 SATUR50 SATUR75 SATUR100\n"
-"Mode (discomode)           : MODE01 MODE02 MODE03 MODE04 MODE05\n"
-"                           : MODE06 MODE07 MODE08 MODE09\n"
-"Bulb color                 : COLOR001 COLOR002 COLOR003 COLOR004\n"
-)
+#####################	
+## Log to Domoticz ##
+#####################
+def doLog(MSG):
+    try:
+        if DOMOTICZ_LOG == 1:
+            urllib2.urlopen("http://"+DOMOTICZ_IP+"/json.htm?type=command&param=addlogmessage&message="+MSG.replace(" ", "%20")).read()
 
-try:
-    CMDLINE_ZONE = sys.argv[1].strip()
-    print "[DEBUG] start command1           :", CMDLINE_ZONE
-
-    CMDLINE_CMD = sys.argv[2].strip()
-    print "[DEBUG] start command2           :", CMDLINE_CMD
-
-except:
-    print CMDLINE_INFO
-    raise SystemExit()
+    except Exception as ex:
+        print "[DEBUG] log error                :", ex 
 
 
-#########################	
+#########################
 ## iBox2 bulb commands ##
 #########################
 def iBox2BulbCommand(x):
@@ -108,6 +87,41 @@ def getChecksum(data):
 	return format(checksum, "04X")[2:]
 
 
+##########################
+## Commandline commands ##
+##########################
+CMDLINE_INFO = (
+"##########################\n"
+"## Command line options ##\n"
+"##########################\n"
+"Use command line as follow : milight.py CMD1 CMD2\n"
+"                           : CMD1 Bulb zone\n"
+"                           : CMD2 Bulb command\n"
+"-------------------------------------------------------------------------------\n"
+"Select the bulb zone       : 00 01 02 03 04\n"
+"Bulb on/off                : ON OFF NIGHTON WHITEON\n"
+"Mode Speed up/down         : SPEEDUP SPEEDDOWN\n"
+"Kelvin warmwhite           : WW00 WW25 WW50 WW75 WW100\n"
+"Brightness                 : DIM00 DIM25 DIM50 DIM75 DIM100\n"
+"Saturation                 : SATUR00 SATUR25 SATUR50 SATUR75 SATUR100\n"
+"Mode (discomode)           : MODE01 MODE02 MODE03 MODE04 MODE05\n"
+"                           : MODE06 MODE07 MODE08 MODE09\n"
+"Bulb color                 : COLOR001 COLOR002 COLOR003 COLOR004\n"
+)
+
+try:
+    CMDLINE_ZONE = sys.argv[1].strip()
+    print "[DEBUG] start command1           :", CMDLINE_ZONE
+
+    CMDLINE_CMD = sys.argv[2].strip()
+    print "[DEBUG] start command2           :", CMDLINE_CMD
+
+except:
+    print CMDLINE_INFO
+    raise SystemExit()
+doLog("milight script started (milight.py " + CMDLINE_ZONE + " " + CMDLINE_CMD + ")")
+
+
 ###################
 ## Start session ##
 ###################
@@ -115,6 +129,7 @@ Session = False
 for iCount in range(0, UDP_MAX_TRY):
     try:
         START_SESSION = "20 00 00 00 16 02 62 3A D5 ED A3 01 AE 08 2D 46 61 41 A7 F6 DC AF D3 E6 00 00 1E"
+        doLog("milight script starting ibox session...")
         sockServer = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
         sockServer.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
         sockServer.bind(('', UDP_PORT_RECEIVE))
@@ -133,11 +148,13 @@ for iCount in range(0, UDP_MAX_TRY):
 
     except socket.timeout:
         print "[DEBUG] timeout on session start :", START_SESSION
+        doLog("milight script timeout on command... doing a retry")
         sockServer.close()
         continue
 
     except Exception as ex:
         print "[DEBUG] something's wrong        :", ex 
+        doLog("milight script something's wrong with the session...")
 
 
 #######################
@@ -157,23 +174,28 @@ if Session == True:
 
             sendCommand = iBox2CommandBuilder(IBOX_MODEL, SessionID1, SessionID2, CycleNR, bulbCommand, CMDLINE_ZONE, Checksum, "00")
             print "[DEBUG] sending command          :", sendCommand
+            doLog("milight script send bulb command: " + sendCommand)
 
             sockServer.sendto(bytearray.fromhex(sendCommand), (IBOX_IP, UDP_PORT_SEND))
             dataReceived, addr = sockServer.recvfrom(1024)
             dataResponse = str(dataReceived.encode('hex')).upper()
             print "[DEBUG] received message         :", dataResponse
+            doLog("milight script received from bulb: " + dataResponse)
             break
 
         except socket.timeout:
             print "[DEBUG] timeout on command       :", sendCommand
+            doLog("milight script timeout on command... doing a retry")
             continue
 
         except Exception as ex:
             print "[DEBUG] something's wrong        :", ex
+            doLog("milight script something's wrong with te command...")
 
         finally:
             sockServer.close()
 else:
     sockServer.close()
 
+doLog("milight script ready...")
 raise SystemExit()
