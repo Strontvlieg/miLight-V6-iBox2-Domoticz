@@ -13,6 +13,8 @@ Change the follow setting to your own settings with Notepad++<br/>
   <li>UDP_PORT_RECEIVE = 55054</li>
   <li>UDP_MAX_TRY = 3</li>
   <li>UDP_TIMEOUT = 5</li>
+  <li>DOMOTICZ_IP = "192.168.1.17"</li>
+  <li>DOMOTICZ_LOG = 1</li>
 </ul>
 </p>
 <h4>How to use</h4>
