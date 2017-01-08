@@ -5,14 +5,13 @@ import socket, sys, urllib2;
 ###################
 ## Configuration ##
 ###################
-IBOX_MODEL = "80 00 00 00 11"   # iBox2
-IBOX_IP = "192.168.1.18"        # iBox2 IP address
+IBOX_IP = "192.168.1.18"        # iBox IP address
 UDP_PORT_SEND = 5987            # Port for sending
 UDP_PORT_RECEIVE = 55054        # Port for receiving
-UDP_MAX_TRY = 5                 # Max sending
+UDP_MAX_TRY = 5                 # Max sending max value is 256
 UDP_TIMEOUT = 5                 # Wait for data in sec
 DOMOTICZ_IP = "192.168.1.17"    # Domoticz IP only needed for logging
-DOMOTICZ_PORT = "8080"            # Domoticz port
+DOMOTICZ_PORT = "8080"            # Domoticz port only needed for logging
 DOMOTICZ_LOG = 0                # Turn logging to Domoticz on/off 0=off and 1=on
 ############################################################################################################
 
@@ -29,10 +28,10 @@ def doLog(MSG):
         print "[DEBUG] log error                :", ex 
 
 
-#########################
-## iBox2 bulb commands ##
-#########################
-def iBox2BulbCommand(x):
+######################
+## iBox v6 commands ##
+######################
+def iBoxV6Commands(x):
     return {
 		"COLOR001"       : "31 00 00 08 01 BA BA BA BA",
 		"COLOR002"       : "31 00 00 08 01 FF FF FF FF",
@@ -50,10 +49,10 @@ def iBox2BulbCommand(x):
 		"DIM100"         : "31 00 00 08 03 00 00 00 00",
 		"ON"             : "31 00 00 08 04 01 00 00 00",
 		"OFF"            : "31 00 00 08 04 02 00 00 00",
-		"NIGHTON"        : "31 00 00 08 04 05 00 00 00",
 		"SPEEDUP"        : "31 00 00 08 04 03 00 00 00",
 		"SPEEDDOWN"      : "31 00 00 08 04 04 00 00 00",
-		"WHITEON"        : "31 00 00 08 05 64 00 00 00",		
+		"NIGHTON"        : "31 00 00 08 04 05 00 00 00",
+		"WHITEON"        : "31 00 00 08 05 64 00 00 00",
 		"WW00"           : "31 00 00 08 05 64 00 00 00",
 		"WW25"           : "31 00 00 08 05 4B 00 00 00",
 		"WW50"           : "31 00 00 08 05 32 00 00 00",
@@ -71,21 +70,31 @@ def iBox2BulbCommand(x):
 	}.get(x)
 
 
-###########################
-## iBox2 command builder ##
-###########################
-def iBox2CommandBuilder(iBoxModel, iBoxSessionID1, iBoxSessionID2, iBoxCycleNR, lightCommand, lightZone, checkSum, Splitter):
-	return iBoxModel + " " + iBoxSessionID1 + " " + iBoxSessionID2 + " " + Splitter + " " + iBoxCycleNR + " " + Splitter + " " + lightCommand + " " + lightZone + " " + Splitter + " " + checkSum
+##################
+## Zone builder ##
+##################
+def getZone(data):
+    Zone = 0
+    for x in bytearray.fromhex(data):
+        Zone += x
+    return format(Zone, "04X")[2:]
 
 
 ######################
 ## Checksum builder ##
 ######################
 def getChecksum(data):
-	checksum = 0
-	for x in bytearray.fromhex(data):
-		checksum += x
-	return format(checksum, "04X")[2:]
+    checksum = 0
+    for x in bytearray.fromhex(data):
+        checksum += x
+    return format(checksum, "04X")[2:]
+
+
+########################
+## V6 command builder ##
+########################
+def V6CommandBuilder(SessionID1, SessionID2, CycleNR, bulbCommand, Zone, checkSum):
+    return "80 00 00 00 11 " + SessionID1 + " " + SessionID2 + " 00 " + CycleNR + " 00 " + bulbCommand + " " + Zone + " 00 " + checkSum
 
 
 ##########################
@@ -130,7 +139,7 @@ Session = False
 for iCount in range(0, UDP_MAX_TRY):
     try:
         START_SESSION = "20 00 00 00 16 02 62 3A D5 ED A3 01 AE 08 2D 46 61 41 A7 F6 DC AF D3 E6 00 00 1E"
-        doLog("Milight Script: Starting ibox session...")
+        doLog("Milight Script: Setting up ibox session...")
         sockServer = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
         sockServer.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
         sockServer.bind(('', UDP_PORT_RECEIVE))
@@ -140,7 +149,6 @@ for iCount in range(0, UDP_MAX_TRY):
         dataResponse = str(dataReceived.encode('hex')).upper()
         SessionID1 = dataResponse[38:40]
         SessionID2 = dataResponse[40:42]
-        print "[DEBUG] iBox model               :", IBOX_MODEL
         print "[DEBUG] received session message :", dataResponse
         print "[DEBUG] sessionID1               :", SessionID1
         print "[DEBUG] sessionID2               :", SessionID2
@@ -164,16 +172,19 @@ for iCount in range(0, UDP_MAX_TRY):
 if Session == True:
     for iCount in range(0, UDP_MAX_TRY):
         try:
-            CycleNR = str(iCount).zfill(2)
+            CycleNR = format(iCount, "04X")[2:]
             print "[DEBUG] cycle number             :", CycleNR
 
-            bulbCommand = iBox2BulbCommand(CMDLINE_CMD)
+            bulbCommand = iBoxV6Commands(CMDLINE_CMD)
             print "[DEBUG] light command            :", bulbCommand
 
-            Checksum = getChecksum(bulbCommand + "00" + CMDLINE_ZONE)
+            useZone = getZone(CMDLINE_ZONE)
+            print "[DEBUG] zone                     :", useZone
+
+            Checksum = getChecksum(bulbCommand + " " + useZone + " 00")
             print "[DEBUG] checksum                 :", Checksum
 
-            sendCommand = iBox2CommandBuilder(IBOX_MODEL, SessionID1, SessionID2, CycleNR, bulbCommand, CMDLINE_ZONE, Checksum, "00")
+            sendCommand = V6CommandBuilder(SessionID1, SessionID2, CycleNR, bulbCommand, useZone, Checksum)                     
             print "[DEBUG] sending command          :", sendCommand
             doLog("Milight Script: Sending command: " + sendCommand)
 
@@ -199,4 +210,5 @@ else:
     sockServer.close()
 
 doLog("Milight Script: Ready...")
+
 raise SystemExit()
