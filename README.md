@@ -1,6 +1,6 @@
 # miLight iBox2 control for Domoticz
 Controls your miLights bulbs and iBox2 with Domoticz and retry commands when sending fails.<br/>
-Tested with bulbs RGBW/WW/CW<br/>
+Tested with 8 watt bulbs RGBW/WW/CW<br/>
 <img src="http://stair-lighting.com/images/MI-LIGHT/WiFi-iBox2/mini/250px_wifi-ibox2-1.jpg">
 <h4>How to install</h4>
 <p>
