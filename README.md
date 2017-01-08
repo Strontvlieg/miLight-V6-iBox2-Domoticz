@@ -14,6 +14,7 @@ Change the follow setting to your own settings with Notepad++<br/>
   <li>UDP_MAX_TRY = 5</li>
   <li>UDP_TIMEOUT = 5</li>
   <li>DOMOTICZ_IP = "192.168.1.17"</li>
+  <li>DOMOTICZ_PORT = 8080</li>
   <li>DOMOTICZ_LOG = 0</li>
 </ul>
 </p>
