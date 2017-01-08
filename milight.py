@@ -12,7 +12,7 @@ UDP_PORT_RECEIVE = 55054        # Port for receiving
 UDP_MAX_TRY = 5                 # Max sending
 UDP_TIMEOUT = 5                 # Wait for data in sec
 DOMOTICZ_IP = "192.168.1.17"    # Domoticz IP only needed for logging
-DOMOTICZ_PORT = 8080            # Domoticz port
+DOMOTICZ_PORT = "8080"          # Domoticz port
 DOMOTICZ_LOG = 0                # Turn logging to Domoticz on/off 0=off and 1=on
 ############################################################################################################
 
