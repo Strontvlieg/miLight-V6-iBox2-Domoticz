@@ -4,7 +4,7 @@ Tested with 8 watt bulbs RGBW/WW/CW<br/>
 <img src="http://stair-lighting.com/images/MI-LIGHT/WiFi-iBox2/mini/250px_wifi-ibox2-1.jpg">
 <h4>How to install</h4>
 <p>
-Copy milight.py to /home/pi/domoticz/scripts/python and set chmod to 777 on the files<br/>
+Copy milight.py to /home/pi/domoticz/scripts/python and set chmod to 777 on the file<br/>
 Change the follow setting to your own settings with Notepad++<br/>
 <ul>
   <li>IBOX_IP = "192.168.1.18"</li>
