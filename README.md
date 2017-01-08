@@ -11,7 +11,7 @@ Change the follow setting to your own settings with Notepad++<br/>
   <li>IBOX_MODEL = "80 00 00 00 11"</li>
   <li>UDP_PORT_SEND = 5987</li>
   <li>UDP_PORT_RECEIVE = 55054</li>
-  <li>UDP_MAX_TRY = 3</li>
+  <li>UDP_MAX_TRY = 5</li>
   <li>UDP_TIMEOUT = 5</li>
   <li>DOMOTICZ_IP = "192.168.1.17"</li>
   <li>DOMOTICZ_LOG = 1</li>
