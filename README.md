@@ -8,7 +8,7 @@ Copy milight.py to /home/pi/domoticz/scripts/python and set chmod to 777 on the 
 Change the follow setting to your own settings with Notepad++<br/>
 <ul>
   <li>IBOX_IP = "192.168.1.18"</li>
-  <li>IBOX_MODEL = "80 00 00 00 11" # iBox2</li>
+  <li>IBOX_MODEL = "80 00 00 00 11"</li>
   <li>UDP_PORT_SEND = 5987</li>
   <li>UDP_PORT_RECEIVE = 55054</li>
   <li>UDP_MAX_TRY = 3</li>
