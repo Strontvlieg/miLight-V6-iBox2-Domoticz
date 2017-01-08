@@ -12,7 +12,7 @@ UDP_PORT_RECEIVE = 55054        # Port for receiving
 UDP_MAX_TRY = 5                 # Max sending
 UDP_TIMEOUT = 5                 # Wait for data in sec
 DOMOTICZ_IP = "192.168.1.17"    # Domoticz IP only needed for logging
-DOMOTICZ_PORT = "8080"          # Domoticz port
+DOMOTICZ_PORT = "8080"            # Domoticz port
 DOMOTICZ_LOG = 0                # Turn logging to Domoticz on/off 0=off and 1=on
 ############################################################################################################
 
@@ -120,7 +120,7 @@ try:
 except:
     print CMDLINE_INFO
     raise SystemExit()
-doLog("milight script starting (milight.py " + CMDLINE_ZONE + " " + CMDLINE_CMD + ")")
+doLog("Milight Script: Starting... (milight.py " + CMDLINE_ZONE + " " + CMDLINE_CMD + ")")
 
 
 ###################
@@ -130,7 +130,7 @@ Session = False
 for iCount in range(0, UDP_MAX_TRY):
     try:
         START_SESSION = "20 00 00 00 16 02 62 3A D5 ED A3 01 AE 08 2D 46 61 41 A7 F6 DC AF D3 E6 00 00 1E"
-        doLog("milight script starting ibox session...")
+        doLog("Milight Script: Starting ibox session...")
         sockServer = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
         sockServer.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
         sockServer.bind(('', UDP_PORT_RECEIVE))
@@ -149,13 +149,13 @@ for iCount in range(0, UDP_MAX_TRY):
 
     except socket.timeout:
         print "[DEBUG] timeout on session start :", START_SESSION
-        doLog("milight script timeout on command... doing a retry")
+        doLog("Milight Script: Timeout on command... doing a retry")
         sockServer.close()
         continue
 
     except Exception as ex:
         print "[DEBUG] something's wrong        :", ex 
-        doLog("milight script something's wrong with the session...")
+        doLog("Milight Script: Something's wrong with the session...")
 
 
 #######################
@@ -175,28 +175,28 @@ if Session == True:
 
             sendCommand = iBox2CommandBuilder(IBOX_MODEL, SessionID1, SessionID2, CycleNR, bulbCommand, CMDLINE_ZONE, Checksum, "00")
             print "[DEBUG] sending command          :", sendCommand
-            doLog("milight script send bulb command: " + sendCommand)
+            doLog("Milight Script: Sending command: " + sendCommand)
 
             sockServer.sendto(bytearray.fromhex(sendCommand), (IBOX_IP, UDP_PORT_SEND))
             dataReceived, addr = sockServer.recvfrom(1024)
             dataResponse = str(dataReceived.encode('hex')).upper()
             print "[DEBUG] received message         :", dataResponse
-            doLog("milight script received from bulb: " + dataResponse)
+            doLog("Milight Script: Receiving response: " + dataResponse)
             break
 
         except socket.timeout:
             print "[DEBUG] timeout on command       :", sendCommand
-            doLog("milight script timeout on command... doing a retry")
+            doLog("Milight Script: Timeout on command... doing a retry")
             continue
 
         except Exception as ex:
             print "[DEBUG] something's wrong        :", ex
-            doLog("milight script something's wrong with te command...")
+            doLog("Milight Script: Something's wrong with te command...")
 
         finally:
             sockServer.close()
 else:
     sockServer.close()
 
-doLog("milight script ready...")
+doLog("Milight Script: Ready...")
 raise SystemExit()
